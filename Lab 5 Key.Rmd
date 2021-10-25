@@ -2,29 +2,49 @@
 title: "Lab 5"
 author: "Daija Odom"
 date: "10/25/2021"
-output: html_document
+output: 
+  html_document: 
+    theme: cosmo
+    toc: yes
+    code_folding: hide
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=TRUE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(effsize)
 ```
 
-## R Markdown
+## Part 1: Confidence Intervals
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+In this section, we'll use the `t.test()` function to calculate confidence intervals.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+### Example 1
 
-```{r cars}
-summary(cars)
+Create a single mock sample containing a number of values, then learn to use `t.test()` to return confidence intervals, and learn about in-line code referencing so our text becomes more reproducible, too.
+
+```{r}
+# Create a mock sample
+
+otter_lengths <- c(30, 45, 28, 31, 34, 46, 52, 29, 90, 72, 112)
+
+# Find the confidence interval:
+otter_ci <- t.test(otter_lengths)
+
+# df refers to degrees of freedom which is your (sample?) mean minus 1
+
+# Find the standard deviation
+otter_sd <- sd(otter_lengths)
 ```
 
-## Including Plots
+If we took multiple samples from this population and calculate a confidence interval for each, we would expect 95% of the confidence intervals to contain the population mean.
 
-You can also embed plots, for example:
+Mean otter length is 36.9 inches $\pm$ 9.3 (mean$\pm$ sd, n= 8) with a 95% confidence interval of [29.1, 44.7] inches.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+To call elements from a list use `objectname$valuename`
+ex. otter_ci$p.value
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#### Now, using in-line referencing
+By using r with surrounding tick marks you are inserting a mini code chunk. You can hover over the mini code chunk and press command + enter to see the values.
+
+Mean otter length `r round(otter_ci$estimate, 1)` inches.
